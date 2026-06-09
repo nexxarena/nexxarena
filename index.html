@@ -117,10 +117,11 @@
     /* ── HERO ── */
     .hero {
       position: relative;
-      min-height: 100vh;
+      width: 100%;
+      aspect-ratio: 16 / 9;
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
-      padding-top: 64px;
+      margin-top: 64px;
     }
     .hero-bg {
       position: absolute; inset: 0;
@@ -627,74 +628,4 @@
           <p>Daily · 9 AM – 10 PM IST</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── STATS BAR ── -->
-<div class="stats-bar fade-in">
-  <div class="stat-item">
-    <div class="stat-value">🏆 <span id="dl-count">17,086</span></div>
-    <div class="stat-label">Total Downloads</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">🎮 500+</div>
-    <div class="stat-label">Daily Tournaments</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">✅ 100%</div>
-    <div class="stat-label">Trusted & Safe</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">💸 Fast</div>
-    <div class="stat-label">Instant Withdrawal</div>
-  </div>
-</div>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="foot-logo">NEXX<em>ARENA</em></div>
-  <p>© 2024 NexXArena · Built for Champions · All rights reserved 🔥</p>
-</footer>
-
-<script>
-  // ── Hamburger toggle
-  function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('open');
-  }
-
-  // ── Download counter animation (+3 every 10s)
-  let dlCount = 17086;
-  function formatNum(n) {
-    return n.toLocaleString('en-IN');
-  }
-  function updateCounters() {
-    dlCount += 3;
-    const els = [document.getElementById('dl-count'), document.getElementById('dl-count-2')];
-    els.forEach(el => {
-      if (!el) return;
-      el.style.transition = 'color 0.4s';
-      el.style.color = '#ff1a26';
-      el.textContent = formatNum(dlCount);
-      setTimeout(() => { el.style.color = ''; }, 700);
-    });
-  }
-  setInterval(updateCounters, 10000);
-
-  // ── Fade-in on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // ── Smooth close menu on outside click
-  document.addEventListener('click', (e) => {
-    const menu = document.getElementById('navMenu');
-    const ham = document.getElementById('hamburger');
-    if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) {
-      menu.classList.remove('open');
-    }
-  });
-</script>
-</body>
-</html>
+    </d
