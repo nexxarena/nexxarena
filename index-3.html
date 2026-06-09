@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexXArena – Free Fire Tournament App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #e8000d;
+      --red-glow: #ff1a26;
+      --dark-red: #8b0000;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #181818;
+      --border: #2a0505;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo img {
+      width: 38px; height: 38px; border-radius: 8px;
+      box-shadow: 0 0 12px var(--red);
+    }
+    .nav-logo span {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem; font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+    .nav-logo span em {
+      color: var(--red-glow);
+      font-style: normal;
+      text-shadow: 0 0 10px var(--red-glow);
+    }
+
+    /* hamburger */
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--red-glow);
+      box-shadow: 0 0 6px var(--red-glow);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .nav-menu {
+      display: none; flex-direction: column;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: rgba(10,10,10,0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 5%;
+      gap: 12px;
+    }
+    .nav-menu.open { display: flex; }
+
+    .nav-links-desktop {
+      display: flex; align-items: center; gap: 28px;
+    }
+    .nav-links-desktop a, .nav-menu a {
+      color: var(--text); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links-desktop a:hover, .nav-menu a:hover { color: var(--red-glow); }
+
+    .btn-nav-dl {
+      background: var(--red);
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      box-shadow: 0 0 14px rgba(232,0,13,0.5);
+      transition: box-shadow 0.3s, transform 0.2s !important;
+    }
+    .btn-nav-dl:hover {
+      box-shadow: 0 0 28px rgba(255,26,38,0.8) !important;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links-desktop { display: none; }
+    }
+    @media (min-width: 769px) {
+      .hamburger { display: none; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('background.jpeg');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.68) 0%,
+        rgba(80,0,0,0.42) 50%,
+        rgba(10,10,10,0.85) 100%
+      );
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 780px;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: rgba(232,0,13,0.18);
+      border: 1px solid var(--red);
+      color: var(--red-glow);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 2px;
+      margin-bottom: 18px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    .hero-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: 3px;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(255,26,38,0.6), 0 2px 20px rgba(0,0,0,0.8);
+      margin-bottom: 10px;
+    }
+    .hero-title em {
+      color: var(--red-glow);
+      font-style: normal;
+      text-shadow: 0 0 40px var(--red-glow), 0 0 80px rgba(255,26,38,0.4);
+    }
+    .hero-sub {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 600;
+      color: #ddd;
+      letter-spacing: 1px;
+      margin-bottom: 32px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+    }
+    .hero-sub span { color: var(--red-glow); }
+
+    .btn-glow-dl {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #c80009, #ff1a26);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 44px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      box-shadow:
+        0 0 20px rgba(255,26,38,0.7),
+        0 0 50px rgba(255,26,38,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+      animation: pulseGlow 2.4s ease-in-out infinite;
+      transition: transform 0.2s;
+    }
+    .btn-glow-dl:hover { transform: scale(1.04); }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,26,38,0.7), 0 0 50px rgba(255,26,38,0.3); }
+      50% { box-shadow: 0 0 36px rgba(255,26,38,1), 0 0 80px rgba(255,26,38,0.55); }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; gap: 0;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      flex: 1; min-width: 160px;
+      padding: 24px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem; font-weight: 900;
+      color: var(--red-glow);
+      text-shadow: 0 0 14px rgba(255,26,38,0.6);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .stat-label {
+      font-size: 0.75rem; color: var(--muted);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 80px 5%; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red-glow);
+      font-family: 'Rajdhani', sans-serif;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .section-desc {
+      color: #aaa;
+      max-width: 560px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--dark);
+    }
+    .about-inner {
+      display: flex; gap: 60px; align-items: center;
+      flex-wrap: wrap;
+    }
+    .about-text { flex: 1; min-width: 260px; }
+    .about-features {
+      flex: 1; min-width: 260px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--red);
+      box-shadow: 0 0 18px rgba(232,0,13,0.2);
+    }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .feature-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: #fff; margin-bottom: 4px;
+    }
+    .feature-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── SCREENSHOTS ── */
+    #screenshots {
+      background: var(--black);
+      text-align: center;
+    }
+    #screenshots .section-title { margin-bottom: 8px; }
+    #screenshots .section-desc { margin: 0 auto 44px; }
+
+    .screenshots-track-wrap {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+    .screenshots-track {
+      display: flex; gap: 20px;
+      width: max-content;
+      animation: scrollTrack 18s linear infinite;
+    }
+    .screenshots-track:hover { animation-play-state: paused; }
+    .screenshot-card {
+      width: 200px; flex-shrink: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      box-shadow: 0 0 0 0 transparent;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .screenshot-card:hover {
+      border-color: var(--red-glow);
+      box-shadow: 0 0 24px rgba(255,26,38,0.45);
+      transform: translateY(-6px) scale(1.03);
+    }
+    .screenshot-card img {
+      width: 100%; display: block;
+      aspect-ratio: 9/19; object-fit: cover;
+    }
+    .screenshot-label {
+      background: rgba(10,10,10,0.88);
+      padding: 8px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--red-glow);
+      text-align: center;
+    }
+    @keyframes scrollTrack {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── DOWNLOAD ── */
+    #download {
+      background: var(--dark);
+      text-align: center;
+    }
+    .download-box {
+      max-width: 640px; margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 32px;
+      box-shadow: 0 0 60px rgba(232,0,13,0.08);
+    }
+    .download-box .section-title { margin-bottom: 10px; }
+    .download-box .section-desc { margin: 0 auto 10px; }
+    .apk-meta {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin: 20px 0 32px;
+    }
+    .apk-tag {
+      background: rgba(232,0,13,0.1);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      color: #ccc;
+      letter-spacing: 1px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    .trusted-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .trusted-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--black);
+    }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; max-width: 760px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-item { display: flex; gap: 14px; align-items: flex-start; }
+    .contact-icon {
+      font-size: 1.5rem; margin-top: 2px;
+    }
+    .contact-info h4 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: #fff; margin-bottom: 4px;
+    }
+    .contact-info p { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 28px 20px;
+    }
+    footer .foot-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.1rem; font-weight: 900;
+      color: #fff; letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    footer .foot-logo em { color: var(--red-glow); font-style: normal; }
+    footer p { font-size: 0.78rem; color: var(--muted); }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--dark-red); border-radius: 3px; }
+
+    /* section fade-in */
+    .fade-in {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo.jpeg" alt="NexXArena Logo" onerror="this.style.display='none'">
+    <span>NEXX<em>ARENA</em></span>
+  </div>
+  <div class="nav-links-desktop">
+    <a href="#about">About</a>
+    <a href="#screenshots">Screenshots</a>
+    <a href="#contact">Contact</a>
+    <a href="https://fs.digicroz.com/nex-arena/apper/nexxarena/apk-builds/nexxarena-v1.apk" class="btn-nav-dl">⬇ Download</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-menu" id="navMenu">
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#screenshots" onclick="toggleMenu()">Screenshots</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="https://fs.digicroz.com/nex-arena/apper/nexxarena/apk-builds/nexxarena-v1.apk" class="btn-nav-dl" style="text-align:center">⬇ Download APK</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">🔥 Free Fire Tournament Platform</div>
+    <h1 class="hero-title">NEXX<em>ARENA</em></h1>
+    <p class="hero-sub">
+      Play Real Tournament Matches &nbsp;·&nbsp; <span>Show Your Skills</span> &nbsp;·&nbsp; Earn Money 💰
+    </p>
+    <a href="https://fs.digicroz.com/nex-arena/apper/nexxarena/apk-builds/nexxarena-v1.apk" class="btn-glow-dl">
+      ⬇ DOWNLOAD NOW!
+    </a>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-inner fade-in">
+    <div class="about-text">
+      <div class="section-label">⚡ About The App</div>
+      <h2 class="section-title">The #1 Free Fire<br>Tournament Arena</h2>
+      <p class="section-desc">
+        NexXArena is India's most trusted Free Fire tournament platform. Join thousands of players competing in daily matches, weekly leagues, and mega tournaments — and walk away with real cash prizes directly in your wallet. 🎯
+      </p>
+      <br>
+      <p class="section-desc">
+        With seamless UX, instant match registration, live leaderboards, and a secure wallet system, NexXArena is built for serious gamers who play to win. 🔫
+      </p>
+    </div>
+    <div class="about-features">
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <div class="feature-title">Daily Tournaments</div>
+        <div class="feature-desc">Join new matches every day and compete for top spots.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Real Cash Prizes</div>
+        <div class="feature-desc">Win real money and withdraw instantly to your account.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title">100% Secure</div>
+        <div class="feature-desc">Verified platform with encrypted transactions and fair play.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">Refer & Earn</div>
+        <div class="feature-desc">Invite friends and earn bonus credits on every referral.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCREENSHOTS ── -->
+<section id="screenshots">
+  <div class="fade-in">
+    <div class="section-label">📱 App Preview</div>
+    <h2 class="section-title">See It In Action</h2>
+    <p class="section-desc">A clean, powerful interface designed for competitive gamers.</p>
+  </div>
+  <div class="screenshots-track-wrap fade-in" style="margin-top: 40px;">
+    <div class="screenshots-track" id="ssTrack">
+      <!-- real images -->
+      <div class="screenshot-card">
+        <img src="home.jpeg" alt="Home Screen">
+        <div class="screenshot-label">🏠 Home</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="profile.jpeg" alt="Profile Screen">
+        <div class="screenshot-label">👤 Profile</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="wallet.jpeg" alt="Wallet Screen">
+        <div class="screenshot-label">💰 Wallet</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="refer.jpeg" alt="Refer Screen">
+        <div class="screenshot-label">🎁 Refer & Earn</div>
+      </div>
+      <!-- duplicates for infinite scroll -->
+      <div class="screenshot-card">
+        <img src="home.jpeg" alt="Home Screen">
+        <div class="screenshot-label">🏠 Home</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="profile.jpeg" alt="Profile Screen">
+        <div class="screenshot-label">👤 Profile</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="wallet.jpeg" alt="Wallet Screen">
+        <div class="screenshot-label">💰 Wallet</div>
+      </div>
+      <div class="screenshot-card">
+        <img src="refer.jpeg" alt="Refer Screen">
+        <div class="screenshot-label">🎁 Refer & Earn</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOWNLOAD ── -->
+<section id="download">
+  <div class="download-box fade-in">
+    <div class="section-label">📥 Get The App</div>
+    <h2 class="section-title">Download NexXArena</h2>
+    <p class="section-desc">Free to download. Free to play. Real money to win. Available for Android devices. 🤖</p>
+    <div class="apk-meta">
+      <span class="apk-tag">📦 APK v1.0</span>
+      <span class="apk-tag">🤖 Android 5.0+</span>
+      <span class="apk-tag">🔒 Safe & Verified</span>
+      <span class="apk-tag">⚡ Fast Install</span>
+    </div>
+    <a href="https://fs.digicroz.com/nex-arena/apper/nexxarena/apk-builds/nexxarena-v1.apk" class="btn-glow-dl" style="font-size:1.1rem; padding: 18px 52px;">
+      ⬇ DOWNLOAD FREE APK
+    </a>
+    <div class="trusted-badge">
+      <div class="dot"></div>
+      Trusted by <strong id="dl-count-2" style="color:#fff; margin: 0 4px;">17,086</strong> players and counting
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="fade-in">
+    <div class="section-label">📬 Contact Us</div>
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="section-desc" style="margin-bottom: 40px;">Have questions about tournaments, payments, or the app? We're here to help. 🙋</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div class="contact-info">
+          <h4>Email Support</h4>
+          <p>support@nexxarena.com</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">💬</div>
+        <div class="contact-info">
+          <h4>Telegram</h4>
+          <p>@NexXArena_Official</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📸</div>
+        <div class="contact-info">
+          <h4>Instagram</h4>
+          <p>@nexxarena</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">⏰</div>
+        <div class="contact-info">
+          <h4>Support Hours</h4>
+          <p>Daily · 9 AM – 10 PM IST</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar fade-in">
+  <div class="stat-item">
+    <div class="stat-value">🏆 <span id="dl-count">17,086</span></div>
+    <div class="stat-label">Total Downloads</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">🎮 500+</div>
+    <div class="stat-label">Daily Tournaments</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">✅ 100%</div>
+    <div class="stat-label">Trusted & Safe</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">💸 Fast</div>
+    <div class="stat-label">Instant Withdrawal</div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="foot-logo">NEXX<em>ARENA</em></div>
+  <p>© 2024 NexXArena · Built for Champions · All rights reserved 🔥</p>
+</footer>
+
+<script>
+  // ── Hamburger toggle
+  function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('open');
+  }
+
+  // ── Download counter animation (+3 every 10s)
+  let dlCount = 17086;
+  function formatNum(n) {
+    return n.toLocaleString('en-IN');
+  }
+  function updateCounters() {
+    dlCount += 3;
+    const els = [document.getElementById('dl-count'), document.getElementById('dl-count-2')];
+    els.forEach(el => {
+      if (!el) return;
+      el.style.transition = 'color 0.4s';
+      el.style.color = '#ff1a26';
+      el.textContent = formatNum(dlCount);
+      setTimeout(() => { el.style.color = ''; }, 700);
+    });
+  }
+  setInterval(updateCounters, 10000);
+
+  // ── Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Smooth close menu on outside click
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('navMenu');
+    const ham = document.getElementById('hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>
