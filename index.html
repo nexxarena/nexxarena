@@ -455,7 +455,7 @@
     <a href="#about">About</a>
     <a href="#screenshots">Screenshots</a>
     <a href="#contact">Contact</a>
-    <a href="https://ClashAura.site" class="btn-nav-dl">⬇ Download</a>
+    <a href="https://clashauras.site" class="btn-nav-dl">⬇ Download</a>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -465,7 +465,7 @@
   <a href="#about" onclick="toggleMenu()">About</a>
   <a href="#screenshots" onclick="toggleMenu()">Screenshots</a>
   <a href="#contact" onclick="toggleMenu()">Contact</a>
-  <a href="https://ClashAura.site" class="btn-nav-dl" style="text-align:center">⬇ Download APK</a>
+  <a href="https://clashauras.site" class="btn-nav-dl" style="text-align:center">⬇ Download APK</a>
 </div>
 
 <!-- ── HERO ── -->
@@ -478,7 +478,7 @@
     <p class="hero-sub">
       Play Real Tournament Matches &nbsp;·&nbsp; <span>Show Your Skills</span> &nbsp;·&nbsp; Earn Money 💰
     </p>
-    <a href="https://ClashAura.site" class="btn-glow-dl">
+    <a href="https://clashauras.site" class="btn-glow-dl">
       ⬇ DOWNLOAD NOW!
     </a>
   </div>
@@ -582,7 +582,7 @@
       <span class="apk-tag">🔒 Safe & Verified</span>
       <span class="apk-tag">⚡ Fast Install</span>
     </div>
-    <a href="https://ClashAura.site" class="btn-glow-dl" style="font-size:1.1rem; padding: 18px 52px;">
+    <a href="https://clashauras.site" class="btn-glow-dl" style="font-size:1.1rem; padding: 18px 52px;">
       ⬇ DOWNLOAD FREE APK
     </a>
     <div class="trusted-badge">
@@ -637,64 +637,3 @@
     <div class="stat-value">🏆 <span id="dl-count">17,086</span></div>
     <div class="stat-label">Total Downloads</div>
   </div>
-  <div class="stat-item">
-    <div class="stat-value">🎮 500+</div>
-    <div class="stat-label">Daily Tournaments</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">✅ 100%</div>
-    <div class="stat-label">Trusted & Safe</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-value">💸 Fast</div>
-    <div class="stat-label">Instant Withdrawal</div>
-  </div>
-</div>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="foot-logo">NEXX<em>ARENA</em></div>
-  <p>© 2024 NexXArena · Built for Champions · All rights reserved 🔥</p>
-</footer>
-
-<script>
-  // ── Hamburger toggle
-  function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('open');
-  }
-
-  // ── Download counter animation (+3 every 10s)
-  let dlCount = 17086;
-  function formatNum(n) {
-    return n.toLocaleString('en-IN');
-  }
-  function updateCounters() {
-    dlCount += 3;
-    const els = [document.getElementById('dl-count'), document.getElementById('dl-count-2')];
-    els.forEach(el => {
-      if (!el) return;
-      el.style.transition = 'color 0.4s';
-      el.style.color = '#ff1a26';
-      el.textContent = formatNum(dlCount);
-      setTimeout(() => { el.style.color = ''; }, 700);
-    });
-  }
-  setInterval(updateCounters, 10000);
-
-  // ── Fade-in on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // ── Smooth close menu on outside click
-  document.addEventListener('click', (e) => {
-    const menu = document.getElementById('navMenu');
-    const ham = document.getElementById('hamburger');
-    if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) {
-      menu.classList.remove('open');
-    }
-  });
-</script>
-</body>
-</html>
